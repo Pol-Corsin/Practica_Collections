@@ -12,17 +12,8 @@ public class Electronica extends Producte {
         return diesGarantia;
     }
 
-    public void setDiesGarantia(int diesGarantia) {
-        this.diesGarantia = diesGarantia;
-    }
-
     @Override
     public double calcularPreu() {
         return getPreu() + getPreu() * (diesGarantia / 365.0) * 0.1;
-    }
-
-
-    public double getPreu() {
-        return 0;
     }
 }

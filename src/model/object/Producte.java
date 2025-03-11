@@ -15,24 +15,12 @@ public abstract class Producte {
         return nom;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
     public double getPreu() {
         return preu;
     }
 
-    public void setPreu(double preu) {
-        this.preu = preu;
-    }
-
     public String getCodiBarres() {
         return codiBarres;
-    }
-
-    public void setCodiBarres(String codiBarres) {
-        this.codiBarres = codiBarres;
     }
 
     public abstract double calcularPreu();

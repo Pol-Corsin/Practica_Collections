@@ -1,36 +1,30 @@
-import view.Vista;
+import model.*;
 import model.object.Alimentacio;
+import model.object.Electronica;
 import model.object.Producte;
 import model.object.Textil;
-import model.object.Electronica;
+import view.Vista;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
-    private static List<Producte> magatzem = new ArrayList<>();
-    private static Map<String, Producte> carretCompra = new HashMap<>();
-    private static List<String> tiquetsCompra = new ArrayList<>();
     private static Vista vista = new Vista();
-
+    private static Model model = new Model();
     public static void main(String[] args) {
-        boolean sortir = false;
-        while (!sortir) {
+        boolean tornar = false;
+        Scanner scanner = new Scanner(System.in);
+
+        while (!tornar) {
             vista.mostrarMissatge("BENVINGUT AL SUPERMERCAT");
             vista.mostrarMissatge("1) Gestió Magatzem i Compres");
             vista.mostrarMissatge("2) Introduir producte");
             vista.mostrarMissatge("3) Passar per caixa");
             vista.mostrarMissatge("4) Mostrar carro de la compra");
             vista.mostrarMissatge("0) Sortir");
-
-            String opcio = vista.obtenirEntrada("Escull una opció:");
-
+            String opcio = scanner.nextLine();
             switch (opcio) {
                 case "1":
                     gestioMagatzem();
@@ -45,10 +39,10 @@ public class Main {
                     mostrarCarroCompra();
                     break;
                 case "0":
-                    sortir = true;
+                    tornar = true;
                     break;
                 default:
-                    vista.mostrarMissatge("Opció no vàlida.");
+                    throw new IllegalArgumentException("Opció no vàlida.");
             }
         }
     }
@@ -56,24 +50,24 @@ public class Main {
     private static void gestioMagatzem() {
         boolean tornar = false;
         while (!tornar) {
-            vista.mostrarMissatge("1.1) Caducitat");
-            vista.mostrarMissatge("1.2) Tiquets de compra");
-            vista.mostrarMissatge("1.3) Composició tèxtil");
-            vista.mostrarMissatge("1.0) Tornar");
+            vista.mostrarMissatge("1) Caducitat");
+            vista.mostrarMissatge("2) Tiquets de compra");
+            vista.mostrarMissatge("3) Composició tèxtil");
+            vista.mostrarMissatge("0) Tornar");
 
             String opcio = vista.obtenirEntrada("Escull una opció:");
 
             switch (opcio) {
-                case "1.1":
+                case "1":
                     mostrarPerCaducitat();
                     break;
-                case "1.2":
+                case "2":
                     mostrarTiquetsCompra();
                     break;
-                case "1.3":
+                case "3":
                     mostrarPerComposicioTextil();
                     break;
-                case "1.0":
+                case "0":
                     tornar = true;
                     break;
                 default:
@@ -85,28 +79,28 @@ public class Main {
     private static void introduirProducte() {
         boolean tornar = false;
         while (!tornar) {
-            vista.mostrarMissatge("2.1) Alimentació");
-            vista.mostrarMissatge("2.2) Tèxtil");
-            vista.mostrarMissatge("2.3) Electrònica");
-            vista.mostrarMissatge("2.0) Tornar");
+            vista.mostrarMissatge("1) Alimentació");
+            vista.mostrarMissatge("2) Tèxtil");
+            vista.mostrarMissatge("3) Electrònica");
+            vista.mostrarMissatge("0) Tornar");
 
             String opcio = vista.obtenirEntrada("Escull una opció:");
 
             switch (opcio) {
-                case "2.1":
+                case "1":
                     introduirAlimentacio();
                     break;
-                case "2.2":
+                case "2":
                     introduirTextil();
                     break;
-                case "2.3":
+                case "3":
                     introduirElectronica();
                     break;
-                case "2.0":
+                case "0":
                     tornar = true;
                     break;
                 default:
-                    vista.mostrarMissatge("Opció no vàlida.");
+                    throw new IllegalArgumentException("Opció no vàlida.");
             }
         }
     }
@@ -116,16 +110,17 @@ public class Main {
         double preu = Double.parseDouble(vista.obtenirEntrada("Preu:"));
         String codiBarres = vista.obtenirEntrada("Codi de barres:");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         LocalDate dataCaducitat = null;
         try {
             dataCaducitat = LocalDate.parse(vista.obtenirEntrada("Data de caducitat (dd/MM/yyyy):"), formatter);
+            System.out.println("S'ha afegit el producte:\n" + codiBarres + " - " + nom + " ( " + preu + "€ ) amb data de caducitat " + dataCaducitat +" CORRECTAMENT\n");
         } catch (DateTimeParseException e) {
-            vista.mostrarMissatge("Format de data incorrecte. Si us plau, introdueix la data en el format dd/MM/yyyy.");
-            return;
+
         }
 
         Alimentacio aliment = new Alimentacio(nom, preu, codiBarres, dataCaducitat);
-        magatzem.add(aliment);
+        model.afegirProducte(aliment);
     }
 
     private static void introduirTextil() {
@@ -135,7 +130,7 @@ public class Main {
         String composicio = vista.obtenirEntrada("Composició tèxtil:");
 
         Textil textil = new Textil(nom, preu, codiBarres, composicio);
-        magatzem.add(textil);
+        model.afegirProducte(textil);
     }
 
     private static void introduirElectronica() {
@@ -145,7 +140,7 @@ public class Main {
         int diesGarantia = Integer.parseInt(vista.obtenirEntrada("Dies de garantia:"));
 
         Electronica electronica = new Electronica(nom, preu, codiBarres, diesGarantia);
-        magatzem.add(electronica);
+        model.afegirProducte(electronica);
     }
 
     private static void passarPerCaixa() {
@@ -155,7 +150,7 @@ public class Main {
         tiquet.append("Nom del supermercat: SAPAMERCAT\n");
         tiquet.append("Detall de la compra:\n");
 
-        for (Producte producte : carretCompra.values()) {
+        for (Producte producte : model.getCarretCompra().values()) {
             double preu = producte.calcularPreu();
             tiquet.append(producte.getNom()).append(" - ").append(preu).append("€\n");
             total += preu;
@@ -163,19 +158,19 @@ public class Main {
 
         tiquet.append("Total a pagar: ").append(total).append("€\n");
         vista.mostrarMissatge(tiquet.toString());
-        tiquetsCompra.add(tiquet.toString());
-        carretCompra.clear();
+        model.afegirTiquet(tiquet.toString());
+        model.buidarCarretCompra();
     }
 
     private static void mostrarCarroCompra() {
-        for (Producte producte : carretCompra.values()) {
+        for (Producte producte : model.getCarretCompra().values()) {
             vista.mostrarMissatge(producte.getNom());
         }
     }
 
     private static void mostrarPerCaducitat() {
         List<Alimentacio> aliments = new ArrayList<>();
-        for (Producte producte : magatzem) {
+        for (Producte producte : model.getMagatzem()) {
             if (producte instanceof Alimentacio) {
                 aliments.add((Alimentacio) producte);
             }
@@ -187,14 +182,14 @@ public class Main {
     }
 
     private static void mostrarTiquetsCompra() {
-        for (String tiquet : tiquetsCompra) {
+        for (String tiquet : model.getTiquetsCompra()) {
             vista.mostrarMissatge(tiquet);
         }
     }
 
     private static void mostrarPerComposicioTextil() {
         List<Textil> textils = new ArrayList<>();
-        for (Producte producte : magatzem) {
+        for (Producte producte : model.getMagatzem()) {
             if (producte instanceof Textil) {
                 textils.add((Textil) producte);
             }
@@ -203,7 +198,5 @@ public class Main {
         for (Textil textil : textils) {
             vista.mostrarMissatge(textil.getNom() + " - " + textil.getComposicio());
         }
-
     }
-
 }

@@ -12,10 +12,6 @@ public class Textil extends Producte {
         return composicio;
     }
 
-    public void setComposicio(String composicio) {
-        this.composicio = composicio;
-    }
-
     @Override
     public double calcularPreu() {
         return getPreu();
