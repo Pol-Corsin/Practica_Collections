@@ -25,14 +25,6 @@ Aquest projecte és un sistema de gestió de supermercat en Java. Permet als usu
 - `Textil`: Productes tèxtils.
 - `Electronica`: Productes electrònics.
 
-### Excepcions
-- `DataCaducitatException`: Excepció per a la data de caducitat.
-- `EnumFailedException`: Excepció per a l'enumeració.
-- `LimitCaracterException`: Excepció per al límit de caràcters.
-- `LimitProductesException`: Excepció per al límit de productes.
-- `NegatiuException`: Excepció per a valors negatius.
-
 ## Ús
 
-1. **Executar l'Aplicació**: Executa la classe Main per iniciar l'aplicació.
 2. **Navegar pel Menú**: Per gestionar el magatzem, afegir productes, processar compres i veure el carro de la compra.
