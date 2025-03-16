@@ -3,13 +3,10 @@ package model;
 import model.object.Producte;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Model {
     private List<Producte> magatzem = new ArrayList<>();
-    private Map<String, Producte> carretCompra = new HashMap<>();
     private List<String> tiquetsCompra = new ArrayList<>();
 
     public void afegirProducte(Producte producte) {
@@ -20,10 +17,6 @@ public class Model {
         return magatzem;
     }
 
-    public Map<String, Producte> getCarretCompra() {
-        return carretCompra;
-    }
-
     public List<String> getTiquetsCompra() {
         return tiquetsCompra;
     }
@@ -32,7 +25,7 @@ public class Model {
         tiquetsCompra.add(tiquet);
     }
 
-    public void buidarCarretCompra() {
-        carretCompra.clear();
+    public void buidarMagatzem() {
+        magatzem.clear();
     }
 }

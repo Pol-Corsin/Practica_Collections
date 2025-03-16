@@ -213,7 +213,7 @@ public class Main {
         tiquet.append("Nom del supermercat: SAPAMERCAT\n");
         tiquet.append("Detall de la compra:\n");
 
-        for (Producte producte : model.getCarretCompra().values()) {
+        for (Producte producte : model.getMagatzem()) {
             double preu = producte.calcularPreu();
             tiquet.append(producte.getNom()).append(" - ").append(preu).append("€\n");
             total += preu;
@@ -222,14 +222,14 @@ public class Main {
         tiquet.append("Total a pagar: ").append(total).append("€\n");
         vista.mostrarMissatge(tiquet.toString());
         model.afegirTiquet(tiquet.toString());
-        model.buidarCarretCompra();
+        model.buidarMagatzem();
     }
 
     private static void mostrarCarroCompra() {
-        if (model.getCarretCompra().isEmpty()) {
+        if (model.getMagatzem().isEmpty()) {
             vista.mostrarMissatge("El carro de la compra està buit.");
         } else {
-            for (Producte producte : model.getCarretCompra().values()) {
+            for (Producte producte : model.getMagatzem()) {
                 vista.mostrarMissatge(producte.getNom());
             }
         }
@@ -271,3 +271,5 @@ public class Main {
         }
     }
 }
+
+
