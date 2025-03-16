@@ -2,7 +2,7 @@
 
 ## Descripció
 
-Aquest projecte és un sistema de gestió de supermercat en Java. Permet als usuaris gestionar un magatzem, afegir productes, processar compres i veure el carro de la compra.
+Aquesta pràctica és un sistema de gestió de supermercat que permet als usuaris gestionar un magatzem(carro), afegir productes, processar compres i veure el carro de la compra.
 
 ## Funcionalitats
 
@@ -24,7 +24,3 @@ Aquest projecte és un sistema de gestió de supermercat en Java. Permet als usu
 - `Alimentacio`: Productes d'alimentació.
 - `Textil`: Productes tèxtils.
 - `Electronica`: Productes electrònics.
-
-## Ús
-
-2. **Navegar pel Menú**: Per gestionar el magatzem, afegir productes, processar compres i veure el carro de la compra.
